@@ -1,0 +1,80 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ app_name }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <div class="container">
+    <h1>{{ app_name }}</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <div>
+        <label>Image
+          <input type="file" name="file" id="fileInput" accept="image/*" required>
+        </label>
+      </div>
+      <div>
+        <label>Method
+          <select name="method" id="methodSelect">
+            <option value="clahe_y">CLAHE (YCrCb)</option>
+            <option value="clahe_lab">CLAHE (Lab)</option>
+            <option value="hist_eq">Histogram Equalization (Y)</option>
+            <option value="hdr">HDR-like (detailEnhance)</option>
+            <option value="fusion">Fusion (Gamma + CLAHE)</option>
+            <option value="ssr">Retinex SSR</option>
+            <option value="msr">Retinex MSR</option>
+            <option value="bilateral">Bilateral Smooth</option>
+            <option value="denoise">Denoise (fastNlMeans)</option>
+            <option value="skin_smooth">Skin Smoothing</option>
+            <option value="sharpen">Sharpen</option>
+            <option value="compare">Comparison Grid</option>
+          </select>
+        </label>
+      </div>
+      <div>
+        <label>Margin (crop) <input name="margin" type="number" step="0.05" value="0.25"></label>
+        <label>Gamma <input name="gamma" type="number" step="0.1" placeholder="optional"></label>
+        <label>Super-resolution <input name="sr" type="checkbox"></label>
+      </div>
+      <div>
+        <button type="submit">Enhance</button>
+      </div>
+    </form>
+
+    <div id="preview"></div>
+    <div id="result"></div>
+  </div>
+
+<script>
+const form = document.getElementById('uploadForm');
+const preview = document.getElementById('preview');
+const result = document.getElementById('result');
+const fileInput = document.getElementById('fileInput');
+
+fileInput.addEventListener('change', () => {
+  const f = fileInput.files[0];
+  if (!f) return;
+  const url = URL.createObjectURL(f);
+  preview.innerHTML = `<h3>Preview</h3><img src="${url}" style="max-width:360px">`;
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  result.innerHTML = "Processing..."
+  const data = new FormData(form);
+  const res = await fetch('/enhance', { method: 'POST', body: data });
+  if (!res.ok) {
+    const j = await res.json().catch(()=>null);
+    result.innerHTML = '<pre style="color:red;">' + (j?.detail || 'Error') + '</pre>';
+    return;
+  }
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  result.innerHTML = `<h3>Result</h3><img src="${url}" style="max-width:720px"><p><a href="${url}" download="enhanced.png">Download</a></p>`;
+});
+</script>
+</body>
+</html>
