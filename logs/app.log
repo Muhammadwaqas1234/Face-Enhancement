@@ -1,0 +1,20 @@
+2025-12-09 23:25:46,739 — INFO — face_enhance — No SR_MODEL_PATH configured; super-resolution disabled.
+2025-12-09 23:25:54,465 — ERROR — face_enhance — Gamma adjustment failed: gamma must be > 0
+Traceback (most recent call last):
+  File "C:\Users\raiwa\Downloads\edge_api\app\main.py", line 123, in enhance_endpoint
+    out = enhancement.adjust_gamma(out, float(gamma))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\raiwa\Downloads\edge_api\app\enhancement.py", line 56, in adjust_gamma
+    raise ValueError("gamma must be > 0")
+ValueError: gamma must be > 0
+2025-12-09 23:25:54,481 — INFO — face_enhance — No SR_MODEL_PATH configured; super-resolution disabled.
+2025-12-09 23:25:58,641 — ERROR — face_enhance — Gamma adjustment failed: gamma must be > 0
+Traceback (most recent call last):
+  File "C:\Users\raiwa\Downloads\edge_api\app\main.py", line 123, in enhance_endpoint
+    out = enhancement.adjust_gamma(out, float(gamma))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\raiwa\Downloads\edge_api\app\enhancement.py", line 56, in adjust_gamma
+    raise ValueError("gamma must be > 0")
+ValueError: gamma must be > 0
+2025-12-09 23:25:58,641 — INFO — face_enhance — No SR_MODEL_PATH configured; super-resolution disabled.
+2025-12-09 23:26:58,876 — INFO — face_enhance — No SR_MODEL_PATH configured; super-resolution disabled.
